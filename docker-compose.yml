@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: just-a-container
+    container_name: just-a-container-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./apis:/var/www/api
+      - ./sql-fe/dist:/var/www/
+    networks:
+      - jac
+
+  nginx:
+    image: nginx:alpine
+    container_name: jacnginx
+    restart: unless-stopped
+    ports:
+      - "8022:80"
+    volumes:
+      - ./apis:/var/www/api
+      - ./sql-fe/dist:/var/www/
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - jac
+
+networks:
+  jac:
+    driver: bridge
