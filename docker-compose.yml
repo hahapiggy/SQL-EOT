@@ -27,6 +27,20 @@ services:
     networks:
       - jac
 
+  maria:
+    image: mariadb
+    container_name: jacFxxkMaria
+    restart: unless-stopped
+    ports:
+      - "8306:3306"
+    volumes:
+      - ./apis:/var/www/api
+      - ./sql-fe/dist:/var/www/
+    networks:
+      - jac
+    environment:
+      MYSQL_ROOT_PASSWORD: rootroot
+
 networks:
   jac:
     driver: bridge
